@@ -82,12 +82,18 @@ if ver[-1:] is "0":
             ver = ver[:4]
             print("The latest version of Darth Meteos' Super Special SD Stash is " + ver + ".\n")
 
+#Input Function
 answer = None
 while answer not in ("y", "n"):
     answer = input("Would you like to download it? [y/n]\n\n")
     
     if answer == "n":
-         exit()
+        f.close()
+        filename = os.getcwd() + '\\data.txt'
+        filename2 = os.getcwd() + '\\data2.txt'
+        os.remove(filename)
+        os.remove(filename2)
+        exit()
     elif answer == "y":
 
         print("")
