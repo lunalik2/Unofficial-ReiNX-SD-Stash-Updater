@@ -35,6 +35,7 @@ regex += r'(?:(\/\S+)*)'
 
 regex += r')'
 
+print("Unofficial ReiNX SD Stash Updater\n")
 
 #HTML Parsing Function
 try:
@@ -53,8 +54,6 @@ try:
     saveFile.close()
 except Exception as e:
     print(str(e))
-
-    print("Fetching files")
 
 infile = "data.txt"
 outfile = "data2.txt"
@@ -78,18 +77,31 @@ url = find_urls_in_string.search(string)
 
 if url is not None and url.group(0) is not None:
        url = url.group(0).strip()
+ver = url[-6:]
+if ver[-1:] is "0":
+            ver = ver[:4]
+            print("The latest version of Darth Meteos' Super Special SD Stash is " + ver + ".\n")
 
+answer = None
+while answer not in ("y", "n"):
+    answer = input("Would you like to download it? [y/n]\n\n")
+    
+    if answer == "n":
+         exit()
+    elif answer == "y":
+
+        print("")
 
 #Download Function
-link = url
-file_name = "Darth Meteos' Super Special SD Stash.zip"
+        link = url
+file_name = "Darth Meteos' Super Special SD Stash " + ver + " - GBATemp.zip"
 with open(file_name, "wb") as f:
         print ("Downloading %s" % file_name)
         response = requests.get(link, stream=True)
         total_length = response.headers.get('content-length')
 
         if total_length is None: # no content length header
-            f.write(response.content)
+                f.write(response.content)
         else:
             dl = 0
             total_length = int(total_length)
@@ -107,6 +119,5 @@ with open(file_name, "wb") as f:
 
 os.remove(filename)
 os.remove(filename2)
-
 
 
