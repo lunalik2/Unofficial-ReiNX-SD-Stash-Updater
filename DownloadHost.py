@@ -94,7 +94,7 @@ while answer not in ("y", "n"):
 
 #Download Function
         link = url
-file_name = "Darth Meteos' Super Special SD Stash " + ver + " - GBATemp.zip"
+file_name = "Darth Meteos' Super Special SD Stash " + ver + ".zip"
 with open(file_name, "wb") as f:
         print ("Downloading %s" % file_name)
         response = requests.get(link, stream=True)
