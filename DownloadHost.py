@@ -4,7 +4,7 @@ import urllib.request
 import urllib.parse
 import urllib.error
 import re
-#import os
+import os
 #from bs4 import BeautifulSoup as Soup
 
 regex = r'('
@@ -37,6 +37,7 @@ regex += r'(?:(\/\S+)*)'
 regex += r')'
 
 
+#HTML Parsing Function
 try:
     url = "https://docs.google.com/document/d/1qDluUCn5zp1XtjCryjCUeaDKo4BzIPEGrq4VgnlPyNE/view"
     values = {}
@@ -84,7 +85,7 @@ if url is not None and url.group(0) is not None:
             #print(urls)
 
 
-
+#Download Function
 link = url
 file_name = "Darth Meteos' Super Special SD Stash.zip"
 with open(file_name, "wb") as f:
@@ -103,4 +104,46 @@ with open(file_name, "wb") as f:
                 done = int(50 * dl / total_length)
                 sys.stdout.write("\r[%s%s]" % ('=' * done, ' ' * (50-done)) )    
                 sys.stdout.flush()
+
+#Cleaning Function
+                filename = os.getcwd() + '\\data.txt'
+                filename2 = os.getcwd() + '\\data2.txt'
+                
+                #try:
+                #os.remove(filename)
+                #except OSError:
+                    #pass
+                    #f1 = open(filename, 'w')
+                    
+                #try:
+                #os.remove(filename2)
+                #except OSError:
+                    #pass
+                    #f2 = open(filename2, 'w')
+                    
+                    #def main():
+                                 #getemptyfiles(sys.argv[1])
+
+'''
+def getemptyfiles(rootdir):
+    for root, dirs, files in os.walk(rootdir):
+        for d in ['RECYCLER', 'RECYCLED']:
+            if d in dirs:
+                dirs.remove(d)
+
+        for f in files:
+            fullname = os.path.join(root, f)
+            try:
+                if os.path.getsize(fullname) == 0:
+                    print (fullname)
+                    os.remove(fullname)
+            except WindowsError:
+                continue
+
+            f.close()
+'''
+os.remove(filename)
+os.remove(filename2)
+
+
 
