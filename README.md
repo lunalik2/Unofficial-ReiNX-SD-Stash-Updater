@@ -3,11 +3,23 @@
 
 A simple python program that fetches the latest ReiNX SD Stash assembled by Darth Meteos. This is designed for the computer, as many people would rather not connect their switch online (if you would like to download the files directly on your switch, look here https://github.com/fgsfdsfgs/reinx-updater). This is in a very simple state right now, but I have many features planned. Also, this can be easily altered to download other files. All credit goes to Rei, and the Reiswitched team for creating ReiNX, and it's splash screen.
 
-How to use:
+**How to use:**
 
 1. Install Python 3.0 or later
 
 2. Install the requests module by typing 'pip install requests' in the command line
+
+**If using GUI:**
+
+3. Download Unofficial ReiNX SD Stash Updater, and run DownloadHost GUI.pyw
+
+4. After about a second, Unofficial ReiNX SD Stash Updater should show you the latest stash
+
+5. Click "Download" to download the stash
+
+6. Enjoy your fresh files (under "about", you also find options to report a bug, join my discord, and join Rei's discord)
+
+**If using Binary:**
 
 3. Download Unofficial ReiNX SD Stash Updater, and run DownloadHost.py
 
