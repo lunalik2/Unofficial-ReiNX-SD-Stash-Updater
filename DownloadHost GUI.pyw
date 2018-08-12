@@ -126,16 +126,16 @@ class Window(Frame):
         menu = Menu(self.master)
         self.master.config(menu=menu)
 
-        file = Menu(menu)
+        file = Menu(menu, tearoff = 0)
         file.add_command(label='File Source', command=self.callback)
         file.add_command(label='Exit', command=self.client_exit)
         menu.add_cascade(label='File', menu=file)
 
-        options = Menu(menu)
+        options = Menu(menu, tearoff = 0)
         options.add_command(label='Will be added soon')
         menu.add_cascade(label='Options', menu=options)
 
-        about = Menu(menu)
+        about = Menu(menu, tearoff = 0)
         about.add_command(label='Report Bug', command=self.issues)
         about.add_command(label='My Discord', command=self.mydiscord)
         about.add_command(label='Reiswitched Discord', command=self.reidiscord)
