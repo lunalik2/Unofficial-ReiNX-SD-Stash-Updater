@@ -1,4 +1,17 @@
 import sys
+import time
+
+#Credit to Bob for this next statement 
+# Check that user is using Python 3
+if (sys.version_info > (3, 5)):
+    # Python 3 code in this block
+    pass
+else:
+    # Python 2 code in this block
+    print("\n\nError - Application launched with Python 3.4 or lower, please install the latest Python.\n")
+    time.sleep(5)
+    sys.exit()
+    
 import requests
 import urllib.request
 import urllib.parse
@@ -7,7 +20,23 @@ import re
 import os
 import winsound
 from tkinter import *
+from pathlib import Path
 
+try:
+    url = "https://www.google.com"
+    urllib.request.urlopen(url)
+except:
+       print("No internet connection found :(\nTry again with an active connection.")
+       time.sleep(2)
+       exit()
+
+
+my_file = Path("resources/data2.txt")
+if not my_file.is_file():
+       print("Launch DownloadHost GUI.pyw.")
+       time.sleep(2)
+       exit()
+       
 regex = r'('
 
     # Scheme (HTTP, HTTPS, FTP and SFTP):
@@ -55,7 +84,7 @@ os.system ("CLS")
 link = url
 file_name = "Darth Meteos' Super Special SD Stash " + ver + ".zip"
 with open(file_name, "wb") as f:
-        print ("Downloading %s" % file_name)
+        print ("Downloading %s" % file_name + '\n')
         response = requests.get(link, stream=True)
         total_length = response.headers.get('content-length')
 
@@ -71,11 +100,11 @@ with open(file_name, "wb") as f:
                 sys.stdout.write("\r[%s%s]" % ('=' * done, ' ' * (50-done)) )    
                 sys.stdout.flush()
 
-print("\n\nDone\n")
+#print("\n\nDone\n")
 
-winsound.PlaySound('resources\start.wav', winsound.SND_ASYNC)
+#winsound.PlaySound('resources\start.wav', winsound.SND_ASYNC)
 
-class Window(Frame):
+'''class Window(Frame):
 
     def __init__(self, child = None):
         Frame.__init__(self, child)
@@ -116,4 +145,5 @@ root.geometry("150x30")
 app = Window(root)
 
 
-root.mainloop()
+root.mainloop()'''
+exit()

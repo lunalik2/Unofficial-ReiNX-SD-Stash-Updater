@@ -1,4 +1,17 @@
 import sys
+import time
+
+#Credit to Bob for this next statement 
+# Check that user is using Python 3
+if (sys.version_info > (3, 5)):
+    # Python 3 code in this block
+    pass
+else:
+    # Python 2 code in this block
+    print("\n\nError - Application launched with Python 3.4 or lower, please install the latest Python.\n")
+    time.sleep(5)
+    sys.exit()
+    
 import requests
 import urllib.request
 import urllib.parse
@@ -52,8 +65,10 @@ try:
     saveFile = open('data.txt','w')
     saveFile.write(str(respData))
     saveFile.close()
-except Exception as e:
-    print(str(e))
+except:
+    print("No internet :(")
+    time.sleep(2)
+    exit()
 
 infile = "data.txt"
 outfile = "data2.txt"
