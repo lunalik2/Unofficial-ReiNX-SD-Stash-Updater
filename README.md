@@ -5,9 +5,9 @@ A simple python program that fetches the latest ReiNX SD Stash assembled by Dart
 
 **How to use:**
 
-1. Install Python 3.0 or later
+1. Install Python 3.5 or later
 
-2. Install the requests module by typing 'pip install requests' in the command line
+2. Run setup.bat
 
 **If using GUI:**
 
