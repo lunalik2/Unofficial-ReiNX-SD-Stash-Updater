@@ -13,13 +13,19 @@ else:
     sys.exit()
     
 import requests
+import zipfile
 import urllib.request
 import urllib.parse
 import urllib.error
 import re
 import os
 import winsound
+from tkinter import filedialog
+from tkinter import ttk
 from tkinter import *
+from tkinter.ttk import *
+from distutils.dir_util import copy_tree
+from distutils.file_util import copy_file
 from pathlib import Path
 
 try:
@@ -100,50 +106,65 @@ with open(file_name, "wb") as f:
                 sys.stdout.write("\r[%s%s]" % ('=' * done, ' ' * (50-done)) )    
                 sys.stdout.flush()
 
-#print("\n\nDone\n")
+print("\n\nDone")
+path = os.getcwd() + "\\Darth Meteos' Super Special SD Stash " + ver + ".zip"
+path2 = os.getcwd() + "\\Darth Meteos' Super Special SD Stash "
+zip_ref = zipfile.ZipFile(path, 'r')
+zip_ref.extractall(path2 + ver)
+zip_ref.close()
 
-#winsound.PlaySound('resources\start.wav', winsound.SND_ASYNC)
+winsound.PlaySound('resources\warn.wav', winsound.SND_ASYNC)
 
-'''class Window(Frame):
+class Window(Frame):
 
-    def __init__(self, child = None):
-        Frame.__init__(self, child)
-        self.child = child
+    def __init__(self, master = None):
+        Frame.__init__(self, master)
+        self.master = master
         self.init_window()
 
     def init_window(self):
 
-        self.child.title("")
+        self.master.title("DownloadHost GUI")
 
         self.pack(fill=BOTH, expand=1)
 
-        
-
-        exitButton = Button(self, text="Ok", command=self.client_exit)
-        exitButton.place(x=100, y=20)
-
-        text = Label(self, text="Download complete")
-        text.pack()
-        
-
-        
-
-        menu = Menu(self.child)
-        self.child.config(menu=menu)
-
-
-       
     
+    
+        button2 = Button(self, text="No", command=self.client_exit)
+        button2.place(x=200, y=30)
+        button1 = Button(self, text="Yes", command=self.browse_button)
+        button1.place(x=100, y=30)
+
+    def browse_button(self):
+    # Allow user to select a directory and store it in global var
+    # called folder_path
+        global folder_path
+        filename = filedialog.askdirectory(title = "Select the root of your SD card")
+        folder_path.set(str(filename))
+        if os.path.exists(filename):
+            fromDirectory = os.getcwd() + "/Darth Meteos' Super Special SD Stash " + ver + "/SD Files"
+            toDirectory = filename
+            copy_tree(fromDirectory, toDirectory)
+            fromDirectory = os.getcwd() + "/Darth Meteos' Super Special SD Stash " + ver + "/ReiNX.bin"
+            toDirectory = os.getcwd()
+            copy_file(fromDirectory, toDirectory)
+            fromDirectory = os.getcwd() + "/Darth Meteos' Super Special SD Stash " + ver + "/README.txt"
+            toDirectory = os.getcwd()
+            copy_file(fromDirectory, toDirectory)
+            exit()
+        
+
     def client_exit(self):
         exit()
 
-        
-
 root = Tk()
-root.geometry("150x30")
-
+root.geometry("300x100")
+root.title("wm min/max")
+root.resizable(0,0)
+root.iconbitmap(os.getcwd() + '\\resources\\transparent.ico')
+folder_path = StringVar()
+lbl2 = Label(text="\nWould you like to place the files on your SD card?")
+lbl2.pack()
 app = Window(root)
 
-
-root.mainloop()'''
-exit()
+root.mainloop()

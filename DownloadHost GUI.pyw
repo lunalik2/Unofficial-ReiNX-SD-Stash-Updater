@@ -20,9 +20,14 @@ import re
 import os
 import webbrowser
 import winsound
-#import multiprocessing
+import shutil
+from tkinter import ttk
 from tkinter import *
+from tkinter.ttk import *
 from PIL import Image, ImageTk
+
+global dirdel
+global zipdel
 
 regex = r'('
 
@@ -86,7 +91,7 @@ except:
             self.pack(fill=BOTH, expand=1)
 
             closeButton = Button(self, text="Close", command=self.client_exit)
-            closeButton.place(x=220, y=100)
+            closeButton.place(x=200, y=100)
 
             text = Label(self, text="Unofficial ReiNX SD Stash Updater", font='Helvetica 18 bold')
             text.pack()
@@ -104,18 +109,15 @@ except:
             self.master.config(menu=menu)
 
             file = Menu(menu, tearoff = 0)
-            file.add_command(label='File Source', command=self.callback)
-            file.add_command(label='Exit', command=self.client_exit)
+            file.add_command(label='Error')
             menu.add_cascade(label='File', menu=file)
 
             options = Menu(menu, tearoff = 0)
-            options.add_command(label='Will be added soon')
+            options.add_command(label='Error')
             menu.add_cascade(label='Options', menu=options)
 
             about = Menu(menu, tearoff = 0)
-            about.add_command(label='Report Bug', command=self.issues)
-            about.add_command(label='My Discord', command=self.mydiscord)
-            about.add_command(label='Reiswitched Discord', command=self.reidiscord)
+            about.add_command(label='Error')
             menu.add_cascade(label='About', menu=about)
 
         def showImg(self):
@@ -145,6 +147,8 @@ except:
 
 
     root = Tk()
+    root.title("wm min/max")
+    root.resizable(0,0)
     root.iconbitmap(os.getcwd() + '\\resources\\reinx.ico')
     root.geometry("490x430")
 
@@ -184,7 +188,6 @@ if ver[-1:] is "0":
             ver = ver[:4]
             
 winsound.PlaySound('resources\start.wav', winsound.SND_ASYNC)
-#os.system ("CLS")
 
 #Tk Frame         
 class Window(Frame):
@@ -200,16 +203,38 @@ class Window(Frame):
 
         self.pack(fill=BOTH, expand=1)
 
+        f = open('resources\config.txt','r')
+        config1 = f.read()
+        config = config1
+        print(config)
+        if config[:1] is "1":
+            dirdel = "false"
+            dirdel1 = "Enable Delete SD Stash Folder"
+        else:
+            dirdel = "true"
+            dirdel1 = "Disable Delete SD Stash Folder"
+        if config[1:] is "1":
+            zipdel = "false"
+            zipdel1 = "Enable Delete SD Stash Zip"
+        else:
+            zipdel = "true"
+            zipdel1 = "Disable Delete SD Stash Zip"
+        
         self.downloadButton = Button(self, text="Download", command=self.download_function)
-        self.downloadButton.place(x=150, y=100)
+        self.downloadButton.place(x=140, y=100)
 
         self.exitButton = Button(self, text="Cancel", command=self.client_exit)
-        self.exitButton.place(x=290, y=100)
+        self.exitButton.place(x=280, y=100)
 
         text = Label(self, text="Unofficial ReiNX SD Stash Updater", font='Helvetica 18 bold')
         text.pack()
-        self.text1 = Label(self, text="\nThe latest version of Darth Meteos' Super Special SD Stash is " + ver + ".\nWould you like to download it?")
+        self.text1 = Label(self, text="\nThe latest version of Darth Meteos' Super Special SD Stash is " + ver + ".")
         self.text1.pack()
+        self.text2 = Label(self, text="Would you like to download it?")
+        self.text2.pack()
+        text3 = Label(self, text="Program by Lunalik, ReiNX by the Reiswitched Team")
+        text3.config(font=("Courier", 7))
+        text3.place(x=230, y=135)
 
         load = Image.open(os.getcwd() + '\\resources\\reinx.png')
         render = ImageTk.PhotoImage(load)
@@ -218,32 +243,81 @@ class Window(Frame):
         img.image = render
         img.place(x=0,y=155)
 
-        menu = Menu(self.master)
-        self.master.config(menu=menu)
+        self.menubar = Menu(self.master)
 
-        file = Menu(menu, tearoff = 0)
-        file.add_command(label='File Source', command=self.callback)
-        file.add_command(label='Exit', command=self.client_exit)
-        menu.add_cascade(label='File', menu=file)
+        self.file = Menu(self.menubar, tearoff = 0)
+        self.file.add_command(label='File Source', command=self.callback)
+        self.file.add_command(label='Exit', command=self.client_exit)
+        self.menubar.add_cascade(label='File', menu=self.file)
 
-        options = Menu(menu, tearoff = 0)
-        options.add_command(label='Will be added soon')
-        menu.add_cascade(label='Options', menu=options)
+        self.options = Menu(self.menubar, tearoff = 0)
+        self.options.add_command(label=dirdel1, command=self.dir_toggle)
+        self.options.add_command(label=zipdel1, command=self.zip_toggle)
+        self.menubar.add_cascade(label='Options', menu=self.options)
 
-        about = Menu(menu, tearoff = 0)
-        about.add_command(label='Report Bug', command=self.issues)
-        about.add_command(label='My Discord', command=self.mydiscord)
-        about.add_command(label='Reiswitched Discord', command=self.reidiscord)
-        menu.add_cascade(label='About', menu=about)
+        self.tools = Menu(self.menubar, tearoff = 0)
+        self.tools.add_command(label='ReiNX Custom Splash Script', command=self.splash)
+        self.menubar.add_cascade(label='Tools', menu=self.tools)
 
-    def showImg(self):
-        load = Image.open(os.getcwd() + '\\resources\\reinx.png')
-        render = ImageTk.PhotoImage(load)
+        self.about = Menu(self.menubar, tearoff = 0)
+        self.about.add_command(label='Report Bug', command=self.issues)
+        self.about.add_command(label='My Discord', command=self.mydiscord)
+        self.about.add_command(label='Reiswitched Discord', command=self.reidiscord)
+        self.menubar.add_cascade(label='About', menu=self.about)
 
-        img = Label(self, image=render)
-        img.image = render
-        img.place(x=0,y=155)
+        self.master.config(menu=self.menubar)
 
+    def splash(self):
+        winsound.PlaySound('resources\dl.wav', winsound.SND_ASYNC)
+        root.withdraw()
+        os.system('python CustomSplash.pyw &')
+        winsound.PlaySound('resources\start.wav', winsound.SND_ASYNC)
+        root.deiconify()
+
+    def dir_toggle(self):
+        f = open('resources\config.txt','r')
+        config1 = f.read()
+        f.close()
+        f = open('resources\config.txt','w')
+        config = config1
+        if config[:1] is "1":
+            config2 = str("2") + str(config[1:])
+            print(config2)
+            f.write(str(config2))
+            dirdel = "true"
+            dirdel1 = "Disable Delete SD Stash Folder"
+            self.options.entryconfig(0, label="Disable Delete SD Stash Folder")
+            
+        else:
+            config2 = str("1") + str(config[1:])
+            print(config2)
+            f.write(str(config2))
+            dirdel = "false"
+            dirdel1 = "Enable Delete SD Stash Folder"
+            self.options.entryconfig(0, label="Enable Delete SD Stash Folder")
+
+    def zip_toggle(self):
+        f = open('resources\config.txt','r')
+        config1 = f.read()
+        f.close()
+        f = open('resources\config.txt','w')
+        config = config1
+        if config[1:] is "1":
+            config2 =  str(config[:1]) + str("2")
+            print(config2)
+            f.write(str(config2))
+            zipdel = "true"
+            zipdel1 = "Disable Delete SD Stash Zip"
+            self.options.entryconfig(1, label="Disable Delete SD Stash Zip")
+            
+        else:
+            config2 = str(config[:1]) + str("1")
+            print(config2)
+            f.write(str(config2))
+            dirdel = "false"
+            dirdel1 = "Enable Delete SD Stash Zip"
+            self.options.entryconfig(1, label="Enable Delete SD Stash Zip")
+        
     def callback(self):
         webbrowser.open_new(r"https://docs.google.com/document/d/1qDluUCn5zp1XtjCryjCUeaDKo4BzIPEGrq4VgnlPyNE/view")
 
@@ -268,29 +342,34 @@ class Window(Frame):
     
 
     def download_function(self):
-        #self.worker
         winsound.PlaySound('resources\dl.wav', winsound.SND_ASYNC)
         root.withdraw()
         os.system('python DownloadHostExt.py &')
-        #text = Label(self, text='\n         Download has completed       ', font='Helvetica 18 bold')
-        #text.pack()
         winsound.PlaySound('resources\start.wav', winsound.SND_ASYNC)
         self.downloadButton.place_forget()
         self.exitButton.place_forget()
-        self.text1.pack_forget()
-        text2 = Label(self, text="\nThe latest version of Darth Meteos' Super Special SD Stash is " + ver + ".\nDownload has completed!")
-        text2.pack()
+        self.text2.pack_forget()
+        text3 = Label(self, text="Download has completed!")
+        text3.pack()
         closeButton = Button(self, text="Close", command=self.client_exit)
-        closeButton.place(x=220, y=100)
+        closeButton.place(x=200, y=100)
+        f = open('resources\config.txt','r')
+        config1 = f.read()
+        config = config1
+        print(config)
+        if config[:1] is "1":
+            dirdel = "false"
+        else:
+            dirdel = "true"
+        if config[1:] is "1":
+            zipdel = "false"
+        else:
+            zipdel = "true"
+        if dirdel is 'true':
+            shutil.rmtree(os.getcwd() + "\\Darth Meteos' Super Special SD Stash " + ver)
+        if zipdel is 'true':
+            os.remove(os.getcwd() + "\\Darth Meteos' Super Special SD Stash " + ver + ".zip")
         root.deiconify()
-        
-
-    '''def worker(self):
-        if __name__ == "__main__":
-            files = ["DownloadHost GUI.py", "DownloadHostExt.py"]
-        for i in files:
-            p = multiprocessing.Process(target=worker, args=(i,))
-            p.start()'''
 
         
 import atexit
@@ -304,11 +383,15 @@ def exit1():
         exit()
 
 root = Tk()
+root.title("wm min/max")
+root.resizable(0,0)
 root.iconbitmap(os.getcwd() + '\\resources\\reinx.ico')
-root.geometry("490x430")
+root.geometry("490x450")
 
 app = Window(root)
 
+
+    
 
 root.mainloop()
 
