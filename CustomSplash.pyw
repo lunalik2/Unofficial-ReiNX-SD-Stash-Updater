@@ -47,9 +47,6 @@ class Window(Frame):
 
     def splash(self):
         winsound.PlaySound('resources/dl.wav', winsound.SND_ASYNC)
-        from pathlib import Path
-        p = Path(__file__).parents[1]
-        print(p)
         #Everything from here to the next comment is written by TheExpertNoob
         im = Image.open(filename, 'r')
         img = im.resize((1280, 720))
