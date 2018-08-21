@@ -67,11 +67,6 @@ class Window(Frame):
           f.write(bytes(x for x in pixels))
           #Everything in between here and the previous comment is written by TheExpertNoob
 
-        fromDirectory = "splash.bin"
-        toDirectory = p
-        copy_file(fromDirectory, toDirectory)
-        os.remove('splash.bin')
-
         load = Image.open(os.getcwd() + '\\resources\\done.png')
         img = load.resize((380, 214))
         render = ImageTk.PhotoImage(img)
